@@ -141,6 +141,10 @@ public class UserController {
     @DeleteMapping(UPDATE_OR_DELETE_USER)
     @Operation(summary = "Удаление записи о пользователе по переданному id", description = "Позволяет удалить запись по id")
     public ResponseEntity deleteUser (@PathVariable @Parameter(description = "чат id пользователя") Long chatId) {
+        if (!userService.existsById(chatId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Пользователь не найден");
+        }
         try {
             userService.deleteUser(chatId);
         }
